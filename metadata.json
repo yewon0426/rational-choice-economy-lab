@@ -1,0 +1,6 @@
+{
+  "name": "ECONOMY LAB — 합리적 선택과 경제주체의 역할",
+  "description": "2022 개정 교육과정 고등학교 통합사회2 교사용 인터랙티브 수업 프레젠테이션 및 기회비용 시뮬레이터",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
