@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Clock, Coins, Sparkles, CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
+import { Clock, Coins, Sparkles, CheckCircle2, XCircle, RotateCcw, Scale } from 'lucide-react';
+import stadiumImg from '../../assets/images/kia_baseball_stadium_1792976362365.jpg';
+import cafeImg from '../../assets/images/part_time_job_cafe_1792976363488.jpg';
 
 interface Props {
   slideId: number; // 3, 4, 5, 6
@@ -8,13 +10,17 @@ interface Props {
 }
 
 export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) => {
+  // Image error states for robust production rendering
+  const [stadiumImgErr, setStadiumImgErr] = useState(false);
+  const [cafeImgErr, setCafeImgErr] = useState(false);
+
   // State for Screen 5 (Sliders)
   const [ticketPrice, setTicketPrice] = useState<number>(50000);
   const [hourlyWage, setHourlyWage] = useState<number>(15000);
   const [hours, setHours] = useState<number>(3);
 
-  // State for Screen 6 (Benefit Slider)
-  const [benefit, setBenefit] = useState<number>(110000);
+  // State for Screen 6 (Benefit Slider - default 60,000 KRW as requested)
+  const [benefit, setBenefit] = useState<number>(60000);
 
   // Derived calculations
   const explicitCost = ticketPrice;
@@ -27,7 +33,6 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
 
   // Screen 6 calculations
   const netBenefit = benefit - BASELINE_OPP_COST;
-  const isRational = netBenefit > 0;
 
   const handleResetSliders = () => {
     setTicketPrice(50000);
@@ -57,12 +62,20 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
           {/* Option A: 야구 관람 */}
           <div className="bg-white rounded-2xl border-2 border-orange-300 overflow-hidden shadow-sm flex flex-col">
             <div className="relative h-44 sm:h-48 bg-orange-950 overflow-hidden shrink-0">
-              <img
-                src="/src/assets/images/kia_baseball_stadium_1792976362365.jpg"
-                alt="KIA 타이거즈 광주-기아 챔피언스 필드 야구 경기장"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover"
-              />
+              {!stadiumImgErr ? (
+                <img
+                  src={stadiumImg}
+                  alt="KIA 타이거즈 광주-기아 챔피언스 필드 야구 경기장"
+                  onError={() => setStadiumImgErr(true)}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-orange-700 to-amber-900 text-white p-4">
+                  <span className="text-4xl mb-1">⚾</span>
+                  <span className="text-xl font-bold">광주-기아 챔피언스 필드</span>
+                  <span className="text-sm text-orange-200">KIA 타이거즈 홈경기 테이블석</span>
+                </div>
+              )}
               <div className="absolute top-3 left-3 bg-orange-600 text-white font-extrabold px-3 py-1 rounded-lg text-sm shadow">
                 대안 A 선택
               </div>
@@ -96,12 +109,20 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
           {/* Option B: 아르바이트 */}
           <div className="bg-white rounded-2xl border-2 border-teal-300 overflow-hidden shadow-sm flex flex-col">
             <div className="relative h-44 sm:h-48 bg-teal-950 overflow-hidden shrink-0">
-              <img
-                src="/src/assets/images/part_time_job_cafe_1792976363488.jpg"
-                alt="카페 아르바이트 근무 현장"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover"
-              />
+              {!cafeImgErr ? (
+                <img
+                  src={cafeImg}
+                  alt="카페 아르바이트 근무 현장"
+                  onError={() => setCafeImgErr(true)}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-teal-800 to-cyan-950 text-white p-4">
+                  <span className="text-4xl mb-1">☕</span>
+                  <span className="text-xl font-bold">카페 주말 아르바이트</span>
+                  <span className="text-sm text-teal-200">시급 15,000원 × 3시간 = 45,000원</span>
+                </div>
+              )}
               <div className="absolute top-3 left-3 bg-teal-700 text-white font-extrabold px-3 py-1 rounded-lg text-sm shadow">
                 대안 B 선택
               </div>
@@ -175,7 +196,7 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
                 명시적 비용
               </h3>
               <p className="text-[21px] md:text-[23px] text-slate-700 font-medium mb-4 leading-snug">
-                선택을 위해 지갑에서 실제로 지출하는 금전적 비용
+                명시적 비용은 경제적 선택을 위해 실제로 지출하는 금전적 비용입니다.
               </p>
 
               {step >= 1 && (
@@ -191,7 +212,7 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
               )}
             </div>
             <div className="text-sm text-slate-500 pt-3 border-t border-orange-100">
-              영수증이 발급되는 실제 결제액
+              영수증이 발급되는 실제 결제액 (예: 입장료 50,000원)
             </div>
           </div>
 
@@ -214,12 +235,12 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
                 암묵적 비용
               </h3>
               <p className="text-[21px] md:text-[23px] text-slate-700 font-medium mb-4 leading-snug">
-                선택으로 인해 포기해야 했던 다른 대안의 가치
+                암묵적 비용은 어떤 대안을 선택함으로써 포기한 최선의 대안에서 얻을 수 있었던 순가치입니다.
               </p>
 
               {step >= 2 && (
                 <div className="p-4 bg-white rounded-xl border border-teal-200 text-center">
-                  <div className="text-base text-slate-500 font-semibold">포기한 아르바이트 임금</div>
+                  <div className="text-base text-slate-500 font-semibold">포기한 아르바이트 임금 (순가치)</div>
                   <div className="text-[23px] md:text-[25px] font-bold text-teal-800 font-mono my-1">
                     15,000원 × 3시간
                   </div>
@@ -230,7 +251,7 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
               )}
             </div>
             <div className="text-sm text-slate-500 pt-3 border-t border-teal-100">
-              손에 쥘 수 있었지만 포기한 임금
+              ※ 아르바이트를 위한 추가 지출이 없으므로 포기한 임금 전액이 암묵적 비용입니다.
             </div>
           </div>
 
@@ -253,7 +274,7 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
                 기회비용
               </h3>
               <p className="text-[21px] md:text-[23px] text-indigo-200 font-medium mb-4 leading-snug">
-                명시적 비용과 암묵적 비용을 모두 더한 진짜 대가
+                기회비용 = 명시적 비용 + 암묵적 비용
               </p>
 
               {step >= 3 && (
@@ -570,18 +591,36 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <button
                 onClick={() => setBenefit(60000)}
-                className="px-3 py-2 text-base font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-center"
+                className={`px-2 py-2 text-[15px] md:text-base font-bold rounded-xl text-center transition ${
+                  benefit === 60000
+                    ? 'bg-rose-100 text-rose-900 border-2 border-rose-300'
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
+                }`}
               >
-                편익 60,000원 (비합리)
+                편익 6만 (알바 유리)
+              </button>
+              <button
+                onClick={() => setBenefit(95000)}
+                className={`px-2 py-2 text-[15px] md:text-base font-bold rounded-xl text-center transition ${
+                  benefit === 95000
+                    ? 'bg-indigo-100 text-indigo-900 border-2 border-indigo-300'
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
+                }`}
+              >
+                편익 9.5만 (동일)
               </button>
               <button
                 onClick={() => setBenefit(110000)}
-                className="px-3 py-2 text-base font-bold bg-teal-100 hover:bg-teal-200 text-teal-900 rounded-xl text-center"
+                className={`px-2 py-2 text-[15px] md:text-base font-bold rounded-xl text-center transition ${
+                  benefit === 110000
+                    ? 'bg-teal-100 text-teal-900 border-2 border-teal-300'
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
+                }`}
               >
-                편익 110,000원 (합리)
+                편익 11만 (야구 유리)
               </button>
             </div>
           </div>
@@ -621,18 +660,34 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
 
               <div
                 className={`p-3.5 rounded-xl border ${
-                  isRational ? 'bg-emerald-50 border-emerald-300' : 'bg-rose-50 border-rose-300'
+                  netBenefit > 0
+                    ? 'bg-emerald-50 border-emerald-300'
+                    : netBenefit === 0
+                    ? 'bg-indigo-50 border-indigo-300'
+                    : 'bg-rose-50 border-rose-300'
                 }`}
               >
-                <div className={`text-base font-bold ${isRational ? 'text-emerald-800' : 'text-rose-800'}`}>
+                <div
+                  className={`text-base font-bold ${
+                    netBenefit > 0
+                      ? 'text-emerald-800'
+                      : netBenefit === 0
+                      ? 'text-indigo-800'
+                      : 'text-rose-800'
+                  }`}
+                >
                   순편익
                 </div>
                 <div
                   className={`text-[28px] md:text-[32px] font-black font-mono mt-1 ${
-                    isRational ? 'text-emerald-700' : 'text-rose-700'
+                    netBenefit > 0
+                      ? 'text-emerald-700'
+                      : netBenefit === 0
+                      ? 'text-indigo-800'
+                      : 'text-rose-700'
                   }`}
                 >
-                  {netBenefit > 0 ? `+${netBenefit.toLocaleString()}` : netBenefit.toLocaleString()}원
+                  {netBenefit > 0 ? `+${netBenefit.toLocaleString()}` : `${netBenefit.toLocaleString()}`}원
                 </div>
               </div>
             </div>
@@ -640,26 +695,34 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
             {/* Rationality Banner */}
             <div
               className={`p-4 rounded-2xl border-2 flex items-center gap-4 transition-all ${
-                isRational
-                  ? 'bg-emerald-500 text-white border-emerald-600 shadow-md'
-                  : 'bg-rose-500 text-white border-rose-600 shadow-md'
+                netBenefit > 0
+                  ? 'bg-emerald-600 text-white border-emerald-700 shadow-md'
+                  : netBenefit === 0
+                  ? 'bg-indigo-700 text-white border-indigo-800 shadow-md'
+                  : 'bg-rose-600 text-white border-rose-700 shadow-md'
               }`}
             >
-              {isRational ? (
+              {netBenefit > 0 ? (
                 <CheckCircle2 className="w-10 h-10 text-white shrink-0" />
+              ) : netBenefit === 0 ? (
+                <Scale className="w-10 h-10 text-yellow-300 shrink-0" />
               ) : (
                 <XCircle className="w-10 h-10 text-white shrink-0" />
               )}
               <div>
-                <h4 className="text-[24px] md:text-[26px] font-black">
-                  {isRational
-                    ? '합리적 선택! (야구장 관람이 합리적)'
-                    : '비합리적 선택! (아르바이트가 합리적)'}
+                <h4 className="text-[23px] md:text-[25px] font-black">
+                  {netBenefit > 0
+                    ? '현재 조건에서는 야구 관람이 더 합리적인 선택입니다.'
+                    : netBenefit === 0
+                    ? '두 선택의 경제적 순가치가 같으므로 어느 쪽을 선택해도 합리적일 수 있습니다.'
+                    : '현재 조건에서는 아르바이트를 선택하는 것이 더 합리적입니다.'}
                 </h4>
-                <p className="text-[19px] md:text-[21px] opacity-95 mt-0.5 leading-snug">
-                  {isRational
-                    ? `편익(${benefit.toLocaleString()}원)이 기회비용(95,000원)보다 커서 순편익(+${netBenefit.toLocaleString()}원)이 발생합니다.`
-                    : `편익(${benefit.toLocaleString()}원)보다 포기한 기회비용(95,000원)이 더 커서 경제적 손실(-${Math.abs(netBenefit).toLocaleString()}원)이 발생합니다.`}
+                <p className="text-[18px] md:text-[20px] opacity-95 mt-0.5 leading-snug">
+                  {netBenefit > 0
+                    ? `야구 관람의 편익(${benefit.toLocaleString()}원)이 기회비용(95,000원)보다 커서 순편익(+${netBenefit.toLocaleString()}원)이 발생하므로 현재 조건에서는 야구 관람이 유리합니다.`
+                    : netBenefit === 0
+                    ? '두 대안의 경제적 순가치가 같으므로 어느 쪽을 선택해도 합리적일 수 있습니다. (편익과 기회비용이 95,000원으로 동일)'
+                    : '야구 관람의 편익보다 기회비용이 크므로, 현재 조건에서는 아르바이트를 선택하는 것이 더 유리합니다.'}
                 </p>
               </div>
             </div>
@@ -668,8 +731,8 @@ export const KiaOpportunityCostSimulator: React.FC<Props> = ({ slideId, step }) 
           {/* Educational Conclusion */}
           <div className="p-3.5 bg-slate-900 text-white rounded-2xl mt-2 text-center">
             <p className="text-[21px] md:text-[23px] font-bold">
-              📢 <strong className="text-yellow-300">핵심 정리:</strong> 합리적 선택은 무조건 돈을 적게 쓰는 선택이 아니라,{' '}
-              <span className="text-teal-200 underline">순편익이 가장 큰 선택</span>입니다.
+              📢 <strong className="text-yellow-300">핵심 정리:</strong> 합리적 선택은 무조건 돈을 적게 쓰는 것이 아니라,{' '}
+              <span className="text-teal-200 underline">여러 대안 중 순편익이 가장 큰 것을 선택</span>하는 것입니다.
             </p>
           </div>
         </div>

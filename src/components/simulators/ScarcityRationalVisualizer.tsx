@@ -41,7 +41,7 @@ export const ScarcityRationalVisualizer: React.FC<Props> = ({ slideId, step }) =
       {
         num: '05',
         title: '기회비용 발생',
-        desc: '어떤 대안을 선택함으로써 포기해야 하는 다른 대안의 가치가 발생한다.',
+        desc: '어떤 대안을 선택함으로써 포기해야 하는 다른 대안의 가치가 발생한다. 따라서 사람들은 선택할 때 발생하는 기회비용을 고려하여 합리적으로 선택해야 한다.',
         color: 'bg-orange-50 border-orange-400 text-orange-950',
         badge: '선택의 대가'
       }
@@ -144,9 +144,9 @@ export const ScarcityRationalVisualizer: React.FC<Props> = ({ slideId, step }) =
     },
     {
       title: '기회비용',
-      desc: '어떤 대안을 선택함으로써 포기한 다른 대안의 가치 중 가장 큰 것',
+      desc: '어떤 대안을 선택할 때 실제로 지출하는 명시적 비용과 포기한 최선의 대안에서 얻을 수 있었던 순가치인 암묵적 비용의 합 (기회비용 = 명시적 비용 + 암묵적 비용)',
       color: 'bg-orange-50 border-orange-300 text-orange-950',
-      badge: '포기한 가치'
+      badge: '포기한 순가치'
     },
     {
       title: '합리적 선택',
@@ -196,7 +196,7 @@ export const ScarcityRationalVisualizer: React.FC<Props> = ({ slideId, step }) =
                 {item.title}
               </h3>
               {isRevealed ? (
-                <p className="text-[22px] md:text-[25px] font-medium leading-snug">
+                <p className="text-[21px] md:text-[23px] font-medium leading-snug">
                   {item.desc}
                 </p>
               ) : (
@@ -207,18 +207,18 @@ export const ScarcityRationalVisualizer: React.FC<Props> = ({ slideId, step }) =
         })}
       </div>
 
-      {/* Bottom Core Formula Box (Formula in 32~36px) */}
-      <div className="p-4 bg-white rounded-2xl border-2 border-indigo-300 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <span className="px-3 py-1.5 bg-indigo-900 text-yellow-300 font-extrabold text-sm rounded-lg">
+      {/* Bottom Core Formula Box (Single line formula in 30~34px with whitespace-nowrap) */}
+      <div className="p-4 bg-white rounded-2xl border-2 border-indigo-300 shadow-sm flex flex-col xl:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3 shrink-0">
+          <span className="px-3 py-1.5 bg-indigo-900 text-yellow-300 font-extrabold text-sm rounded-lg shrink-0">
             핵심 공식
           </span>
-          <div className="text-[30px] md:text-[34px] font-black text-[#0F1E36] font-mono tracking-tight">
+          <div className="text-[28px] md:text-[32px] font-black text-[#0F1E36] font-mono tracking-tight whitespace-nowrap">
             순편익 = 편익 − 기회비용
           </div>
         </div>
-        <div className="text-[20px] md:text-[22px] text-slate-700 font-semibold bg-indigo-50 px-4 py-2.5 rounded-xl border border-indigo-100">
-          💡 순편익이 0보다 커야 하며, <strong className="text-indigo-900 underline">가능한 대안들 중 순편익이 가장 큰 대안</strong>이 최선의 합리적 선택입니다.
+        <div className="text-[19px] md:text-[21px] text-slate-700 font-semibold bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100 leading-snug">
+          💡 합리적 선택은 여러 대안의 편익과 기회비용을 비교하여 <strong className="text-indigo-900 underline">순편익이 가장 큰 대안</strong>을 선택하는 것입니다.
         </div>
       </div>
     </div>

@@ -9,6 +9,8 @@ import {
   Car
 } from 'lucide-react';
 
+import pollutionImg from '../../assets/images/market_failure_pollution_1792976363994.jpg';
+
 interface Props {
   slideId: number; // 8, 9, 10, 11, 12
   step: number;
@@ -291,7 +293,7 @@ export const MarketFailureVisualizer: React.FC<Props> = ({ slideId, step }) => {
             <div className="md:col-span-5 bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs flex flex-col">
               <div className="h-44 bg-slate-900 overflow-hidden shrink-0">
                 <img
-                  src="/src/assets/images/market_failure_pollution_1792976363994.jpg"
+                  src={pollutionImg}
                   alt="공장 매연과 환경오염"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover"

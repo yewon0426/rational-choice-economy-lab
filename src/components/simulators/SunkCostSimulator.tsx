@@ -16,17 +16,18 @@ export const SunkCostSimulator: React.FC<Props> = ({ step }) => {
           </div>
           <div>
             <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-xs font-bold px-2 py-0.5 bg-rose-200 text-rose-900 rounded">상황 제시</span>
+              <span className="text-xs font-bold px-2 py-0.5 bg-rose-200 text-rose-900 rounded">매몰비용 사례</span>
               <span className="text-base font-bold text-rose-900">환불 불가 테이블석 티켓 50,000원 결제 완료</span>
             </div>
-            <p className="text-[21px] md:text-[23px] text-slate-800 font-medium leading-snug">
-              경기 당일, <strong>폭우가 쏟아지고 고열과 심한 두통</strong>이 발생했습니다.{' '}
-              <span className="text-rose-700 font-bold">티켓은 취소나 환불이 절대 불가능합니다.</span>
+            <p className="text-[20px] md:text-[22px] text-slate-800 font-medium leading-snug">
+              경기 당일 폭우와 심한 두통이 발생했습니다.{' '}
+              <strong>이미 지출한 티켓값 50,000원은 야구장에 가든 가지 않든 돌려받을 수 없습니다.</strong>{' '}
+              <span className="text-rose-700 font-bold">따라서 지금부터 발생하는 추가 편익과 추가 비용을 비교하여 선택해야 합니다.</span>
             </p>
           </div>
         </div>
         <div className="hidden sm:block text-right shrink-0 ml-4">
-          <span className="text-xs text-rose-600 font-bold block">이미 지출된 비용</span>
+          <span className="text-xs text-rose-600 font-bold block">이미 지출된 비용 (매몰비용)</span>
           <span className="text-[32px] md:text-[36px] font-black text-rose-700 font-mono line-through">
             50,000원
           </span>
@@ -50,7 +51,7 @@ export const SunkCostSimulator: React.FC<Props> = ({ step }) => {
               </span>
               {step >= 3 && (
                 <span className="text-sm font-bold text-rose-600 flex items-center gap-1">
-                  <X className="w-4 h-4" /> 비합리적 선택
+                  <X className="w-4 h-4" /> 현재 조건에서는 불리
                 </span>
               )}
             </div>
@@ -77,7 +78,7 @@ export const SunkCostSimulator: React.FC<Props> = ({ step }) => {
                   <div className="p-3 bg-rose-100 rounded-xl border border-rose-300 flex justify-between items-center font-bold text-rose-950">
                     <span>추가 순편익 (편익 − 비용):</span>
                     <span className="font-mono text-[24px] md:text-[26px] font-black text-rose-700">
-                      -20,000원 (손실)
+                      10,000 − 30,000 = -20,000원
                     </span>
                   </div>
                 ) : (
@@ -94,7 +95,7 @@ export const SunkCostSimulator: React.FC<Props> = ({ step }) => {
           </div>
 
           <div className="text-sm text-slate-500 pt-2 border-t border-slate-100">
-            5만 원의 본전 생각에 얽매여 더 큰 손해를 보는 함정
+            5만 원의 본전 생각에 얽매여 더 큰 손실을 보는 함정
           </div>
         </div>
 
@@ -113,7 +114,7 @@ export const SunkCostSimulator: React.FC<Props> = ({ step }) => {
               </span>
               {step >= 3 && (
                 <span className="text-sm font-bold text-emerald-700 flex items-center gap-1">
-                  <Check className="w-4 h-4" /> 합리적 선택
+                  <Check className="w-4 h-4" /> 현재 조건에서는 더 합리적
                 </span>
               )}
             </div>
@@ -134,13 +135,13 @@ export const SunkCostSimulator: React.FC<Props> = ({ step }) => {
                 </div>
                 <div className="p-3 bg-white rounded-xl border border-slate-200 flex justify-between items-center text-slate-700">
                   <span>추가 비용:</span>
-                  <span className="font-bold">0원 (추가 부담 없음)</span>
+                  <span className="font-bold">0원 (추가 지출 없음)</span>
                 </div>
                 {step >= 3 ? (
                   <div className="p-3 bg-emerald-100 rounded-xl border border-emerald-300 flex justify-between items-center font-bold text-emerald-950">
                     <span>추가 순편익 (편익 − 비용):</span>
                     <span className="font-mono text-[24px] md:text-[26px] font-black text-emerald-800">
-                      +60,000원 (이익)
+                      60,000 − 0 = +60,000원
                     </span>
                   </div>
                 ) : (
@@ -170,8 +171,8 @@ export const SunkCostSimulator: React.FC<Props> = ({ step }) => {
               <Sparkles className="w-6 h-6 text-yellow-300" />
             </span>
             <p className="text-[20px] md:text-[22px] font-medium leading-snug">
-              <strong className="text-yellow-300 font-bold">핵심 정리:</strong> 매몰비용은 이미 지출하여 회수할 수 없는 비용이므로,{' '}
-              <span className="text-teal-200 underline font-bold">현재의 선택에서는 앞으로 얻을 편익과 발생할 비용을 비교</span>해야 합니다.
+              <strong className="text-yellow-300 font-bold">매몰비용:</strong> 이미 지출하여 회수할 수 없는 비용으로, 현재의 합리적 선택을 판단할 때 고려해서는 안 되는 비용입니다.{' '}
+              <span className="text-teal-200 underline font-bold">합리적 선택을 할 때는 이미 회수할 수 없는 과거의 비용에 얽매이지 않고, 앞으로 발생할 편익과 비용을 비교</span>해야 합니다.
             </p>
           </div>
           <span className="text-xs text-slate-400 font-mono shrink-0 hidden lg:inline">EBS 개념완성 80p</span>
